@@ -1,4 +1,6 @@
-if (process.env.NODE_ENV === 'development') {
+let config = { stringRefs: true };
+
+if (process.env.NODE_ENV !== 'production') {
 	const { options } = require('preact');
 	const oldVnodeOption = options.vnode;
 
@@ -10,7 +12,7 @@ if (process.env.NODE_ENV === 'development') {
 		}
 
 		if (
-			attributes && attributes.ref !== void 0 &&
+			config.stringRefs && attributes && attributes.ref !== void 0 &&
 			typeof attributes.ref !== 'function'
 		) {
 			throw new Error(
@@ -82,4 +84,8 @@ if (process.env.NODE_ENV === 'development') {
 	};
 
 	require('preact/devtools');
+}
+
+export default function(args) {
+	config = { ...config, ...args };
 }
